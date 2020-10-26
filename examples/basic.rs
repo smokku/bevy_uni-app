@@ -1,4 +1,4 @@
-use bevy::{input::keyboard::KeyboardInput, prelude::*};
+use bevy::{input::keyboard::KeyboardInput, input::mouse::MouseButtonInput, prelude::*};
 use bevy_uni_app::{AppConfig, UniAppPlugin};
 
 pub fn main() {
@@ -7,9 +7,7 @@ pub fn main() {
     App::build()
         .add_default_plugins()
         // plugin stuff
-        .add_resource(AppConfig::new("Bevy uni-app", (400, 300)))
-        // .add_resource::<InitFn>(Arc::new(Box::new(init)))
-        // .add_resource::<RenderFn>(Arc::new(Box::new(render)))
+        .add_resource(AppConfig::new("Bevy uni-app", (640, 480)))
         .add_plugin(UniAppPlugin)
         // example stuff
         .add_system(input.system())
@@ -19,12 +17,14 @@ pub fn main() {
 #[derive(Default)]
 struct EventsState {
     keyboard_input_event_reader: EventReader<KeyboardInput>,
+    mouse_button_event_reader: EventReader<MouseButtonInput>,
     cursor_moved_event_reader: EventReader<CursorMoved>,
 }
 
 fn input(
     mut state: Local<EventsState>,
     keyboard_input_events: Res<Events<KeyboardInput>>,
+    mouse_button_events: Res<Events<MouseButtonInput>>,
     cursor_moved_events: Res<Events<CursorMoved>>,
 ) {
     for event in state
@@ -34,6 +34,9 @@ fn input(
         println!("keyboard input {:?}", event);
     }
     for event in state.cursor_moved_event_reader.iter(&cursor_moved_events) {
-        println!("mouse input {:?}", event);
+        println!("mouse moved {:?}", event);
+    }
+    for event in state.mouse_button_event_reader.iter(&mouse_button_events) {
+        println!("mouse button {:?}", event);
     }
 }

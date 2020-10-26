@@ -9,7 +9,11 @@ pub fn convert_mouse_button(mouse_button: usize) -> MouseButton {
     }
 }
 
-pub fn convert_key_str(key: &str) -> Option<KeyCode> {
+pub fn convert_key_str(key: &str, code: &str) -> Option<KeyCode> {
+    let key = match key {
+        "" => code,
+        key => key,
+    };
     match key {
         "Digit1" => Some(KeyCode::Key1),
         "Digit2" => Some(KeyCode::Key2),
